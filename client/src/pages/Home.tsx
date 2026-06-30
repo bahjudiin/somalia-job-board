@@ -65,7 +65,21 @@ export default function Home() {
     fetch("/jobs.json")
       .then((res) => res.json())
       .then((data) => {
-        setJobs(data);
+        const manualJobs = JSON.parse(localStorage.getItem("manual_jobs") || "[]");
+        const mapped = manualJobs.map((mj: any, i: number) => ({
+          id: 90000 + i,
+          title: mj.title || "Untitled",
+          company: mj.company || "Unknown",
+          location: mj.location || "Somalia",
+          type: mj.type || "NGO",
+          date_posted: mj.date_posted || new Date().toISOString().split("T")[0],
+          description: mj.description || "",
+          url: mj.url || "#",
+          original_url: mj.url || null,
+          source: mj.source || "Manual",
+          engagement: 0
+        }));
+        setJobs([...mapped, ...data]);
         setLoading(false);
       })
       .catch(() => setLoading(false));

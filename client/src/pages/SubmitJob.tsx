@@ -15,15 +15,17 @@ export default function SubmitJob() {
     const data = new FormData(form);
 
     const job = {
-      title: data.get("title"),
-      url: data.get("url"),
-      company: data.get("company"),
-      location: data.get("location"),
-      type: data.get("type"),
-      source: data.get("source"),
-      description: data.get("description"),
+      title: String(data.get("title") || "").trim(),
+      url: String(data.get("url") || "").trim(),
+      company: String(data.get("company") || "").trim(),
+      location: String(data.get("location") || "Somalia").trim(),
+      type: String(data.get("type") || "NGO").trim(),
+      source: String(data.get("source") || "Manual").trim(),
+      description: String(data.get("description") || "").trim(),
       date_posted: new Date().toISOString().split("T")[0]
     };
+
+    if (!job.title || !job.url) return;
 
     const existing = JSON.parse(localStorage.getItem("manual_jobs") || "[]");
     existing.unshift(job);
@@ -44,7 +46,7 @@ export default function SubmitJob() {
         {submitted && (
           <div className="flex items-center gap-2 bg-primary/10 text-primary rounded-lg p-3 mb-4 text-sm">
             <CheckCircle className="w-4 h-4 shrink-0" />
-            Job saved successfully.
+            Job saved. Go to Home to see it.
           </div>
         )}
 
@@ -66,7 +68,7 @@ export default function SubmitJob() {
             </div>
             <div>
               <label className="text-xs font-medium text-foreground mb-1 block">Location</label>
-              <Input name="location" placeholder="e.g. Mogadishu" className="bg-input border-border" />
+              <Input name="location" placeholder="e.g. Mogadishu" defaultValue="Somalia" className="bg-input border-border" />
             </div>
           </div>
 
@@ -87,15 +89,15 @@ export default function SubmitJob() {
             </div>
             <div>
               <label className="text-xs font-medium text-foreground mb-1 block">Source</label>
-              <Select name="source" defaultValue="Telegram">
+              <Select name="source" defaultValue="Manual">
                 <SelectTrigger className="bg-input border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="Manual">Manual</SelectItem>
                   <SelectItem value="Telegram">Telegram</SelectItem>
                   <SelectItem value="Facebook">Facebook</SelectItem>
                   <SelectItem value="WhatsApp">WhatsApp</SelectItem>
-                  <SelectItem value="Twitter">Twitter/X</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>

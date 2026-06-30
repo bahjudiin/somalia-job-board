@@ -14,10 +14,10 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-border">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container flex h-14 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-lg font-bold text-foreground tracking-tight">
+          <Link href="/" className="text-lg font-bold text-primary tracking-tight">
             SJB
           </Link>
           <nav className="hidden md:flex items-center gap-1">
