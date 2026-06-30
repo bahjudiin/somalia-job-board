@@ -8,3 +8,4 @@ Thumbs.db
 
 client/public/.gitkeep
 .vercel
+.env*

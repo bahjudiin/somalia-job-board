@@ -43,76 +43,74 @@
 }
 
 :root {
-  /* Elegant & Purposeful Design Palette */
-  --primary: #1a3a52; /* Deep Navy */
-  --primary-foreground: #faf8f3; /* Soft Cream */
-  --sidebar-primary: #1a3a52;
-  --sidebar-primary-foreground: #faf8f3;
-  --chart-1: #5a9fa5; /* Soft Teal */
-  --chart-2: #d4a574; /* Warm Gold */
-  --chart-3: #1a3a52; /* Deep Navy */
-  --chart-4: #8b6f47; /* Muted Gold */
-  --chart-5: #5a9fa5; /* Soft Teal */
-  --radius: 0.65rem;
-  --background: #faf8f3; /* Soft Cream */
-  --foreground: #2c2c2c; /* Charcoal */
-  --card: #ffffff; /* White */
-  --card-foreground: #2c2c2c; /* Charcoal */
-  --popover: #ffffff;
-  --popover-foreground: #2c2c2c;
-  --secondary: #5a9fa5; /* Soft Teal */
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #8b5cf6;
+  --radius: 0.5rem;
+  --background: #0a0a0f;
+  --foreground: #ffffff;
+  --card: #1a1a2e;
+  --card-foreground: #ffffff;
+  --popover: #1a1a2e;
+  --popover-foreground: #ffffff;
+  --secondary: #6b7280;
   --secondary-foreground: #ffffff;
-  --muted: #e8e5dd; /* Muted Cream */
-  --muted-foreground: #6b6b6b; /* Muted Gray */
-  --accent: #d4a574; /* Warm Gold */
-  --accent-foreground: #1a3a52; /* Deep Navy */
-  --destructive: #dc2626; /* Red */
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e8e5dd; /* Muted Cream */
-  --input: #ffffff;
-  --ring: #d4a574; /* Warm Gold */
-  --sidebar: #faf8f3; /* Soft Cream */
-  --sidebar-foreground: #2c2c2c; /* Charcoal */
-  --sidebar-accent: #d4a574; /* Warm Gold */
-  --sidebar-accent-foreground: #1a3a52; /* Deep Navy */
-  --sidebar-border: #e8e5dd; /* Muted Cream */
-  --sidebar-ring: #d4a574; /* Warm Gold */
+  --border: #1f2937;
+  --input: #1f2937;
+  --ring: #3b82f6;
+  --sidebar: #0f0f1a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-accent: #1a1a2e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #3b82f6;
 }
 
 .dark {
-  /* Dark mode - maintain elegant palette */
-  --primary: #1a3a52; /* Deep Navy */
-  --primary-foreground: #faf8f3; /* Soft Cream */
-  --sidebar-primary: #1a3a52;
-  --sidebar-primary-foreground: #faf8f3;
-  --background: #0f1a24; /* Very Dark Navy */
-  --foreground: #e8e5dd; /* Light Cream */
-  --card: #1a2a38; /* Dark Navy */
-  --card-foreground: #e8e5dd; /* Light Cream */
-  --popover: #1a2a38;
-  --popover-foreground: #e8e5dd;
-  --secondary: #5a9fa5; /* Soft Teal */
-  --secondary-foreground: #faf8f3;
-  --muted: #2a3a48; /* Muted Dark */
-  --muted-foreground: #a8a5a0; /* Muted Light */
-  --accent: #d4a574; /* Warm Gold */
-  --accent-foreground: #0f1a24; /* Very Dark Navy */
-  --destructive: #ff6b6b; /* Lighter Red */
-  --destructive-foreground: #0f1a24;
-  --border: #2a3a48; /* Muted Dark */
-  --input: #1a2a38; /* Dark Navy */
-  --ring: #d4a574; /* Warm Gold */
-  --chart-1: #5a9fa5; /* Soft Teal */
-  --chart-2: #d4a574; /* Warm Gold */
-  --chart-3: #7ab5bc; /* Lighter Teal */
-  --chart-4: #8b6f47; /* Muted Gold */
-  --chart-5: #5a9fa5; /* Soft Teal */
-  --sidebar: #1a2a38; /* Dark Navy */
-  --sidebar-foreground: #e8e5dd; /* Light Cream */
-  --sidebar-accent: #d4a574; /* Warm Gold */
-  --sidebar-accent-foreground: #0f1a24; /* Very Dark Navy */
-  --sidebar-border: #2a3a48; /* Muted Dark */
-  --sidebar-ring: #d4a574; /* Warm Gold */
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --background: #0a0a0f;
+  --foreground: #ffffff;
+  --card: #1a1a2e;
+  --card-foreground: #ffffff;
+  --popover: #1a1a2e;
+  --popover-foreground: #ffffff;
+  --secondary: #6b7280;
+  --secondary-foreground: #ffffff;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #1f2937;
+  --input: #1f2937;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #8b5cf6;
+  --sidebar: #0f0f1a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-accent: #1a1a2e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #3b82f6;
 }
 
 @layer base {
@@ -121,25 +119,25 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Georgia', serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
   h1 {
-    @apply text-4xl font-bold text-primary;
+    @apply text-4xl font-bold text-foreground;
   }
   h2 {
-    @apply text-3xl font-semibold text-primary;
+    @apply text-3xl font-semibold text-foreground;
   }
   h3 {
-    @apply text-2xl font-semibold text-primary;
+    @apply text-2xl font-semibold text-foreground;
   }
   h4 {
-    @apply text-xl font-semibold text-primary;
+    @apply text-xl font-semibold text-foreground;
   }
   p {
-    @apply text-base text-foreground leading-relaxed;
+    @apply text-sm text-muted-foreground leading-relaxed;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -155,24 +153,11 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -183,16 +168,16 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
   }
 }
