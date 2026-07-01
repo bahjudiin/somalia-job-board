@@ -2,7 +2,7 @@ name: Scrape Somali Jobs
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 1 * * *"
   workflow_dispatch:
 
 permissions:
@@ -16,19 +16,21 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run scraper
         run: node scrapers/jobs_scraper.cjs
+        timeout-minutes: 10
+        env:
+          TIME_FILTER: "7d"
 
       - name: Commit updated jobs.json
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

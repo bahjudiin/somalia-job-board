@@ -3,7 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Calendar, ExternalLink, Loader2, Bookmark, BookmarkCheck } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Calendar,
+  ExternalLink,
+  Loader2,
+  Bookmark,
+  BookmarkCheck,
+  Clock,
+  Filter,
+} from "lucide-react";
 
 interface Job {
   id: number;
@@ -40,9 +50,16 @@ const FALLBACK_JOBS: Job[] = [
     url: "#",
     original_url: null,
     source: "System",
-    engagement: 0
-  }
+    engagement: 0,
+  },
 ];
+
+const TIME_FILTERS = [
+  { label: "24h", ms: 24 * 60 * 60 * 1000 },
+  { label: "1 week", ms: 7 * 24 * 60 * 60 * 1000 },
+  { label: "1 month", ms: 30 * 24 * 60 * 60 * 1000 },
+  { label: "All", ms: Infinity },
+] as const;
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>(FALLBACK_JOBS);
@@ -59,7 +76,10 @@ export default function Home() {
   const [filters, setFilters] = useState({
     location: [] as string[],
     type: [] as string[],
+    source: [] as string[],
   });
+
+  const [timeFilter, setTimeFilter] = useState<keyof typeof TIME_FILTERS>("All");
 
   useEffect(() => {
     fetch("/jobs.json")
@@ -77,7 +97,7 @@ export default function Home() {
           url: mj.url || "#",
           original_url: mj.url || null,
           source: mj.source || "Manual",
-          engagement: 0
+          engagement: 0,
         }));
         setJobs([...mapped, ...data]);
         setLoading(false);
@@ -94,11 +114,21 @@ export default function Home() {
       const isSaved = prev.includes(job.id);
       if (isSaved) {
         const data = JSON.parse(localStorage.getItem("saved_jobs_data") || "[]");
-        localStorage.setItem("saved_jobs_data", JSON.stringify(data.filter((j: SavedJob) => j.id !== job.id)));
+        localStorage.setItem(
+          "saved_jobs_data",
+          JSON.stringify(data.filter((j: SavedJob) => j.id !== job.id))
+        );
         return prev.filter((id) => id !== job.id);
       } else {
         const data = JSON.parse(localStorage.getItem("saved_jobs_data") || "[]");
-        data.push({ id: job.id, title: job.title, company: job.company, location: job.location, url: job.original_url || job.url, source: job.source });
+        data.push({
+          id: job.id,
+          title: job.title,
+          company: job.company,
+          location: job.location,
+          url: job.original_url || job.url,
+          source: job.source,
+        });
         localStorage.setItem("saved_jobs_data", JSON.stringify(data));
         return [...prev, job.id];
       }
@@ -115,8 +145,24 @@ export default function Home() {
     return Array.from(types).sort();
   }, [jobs]);
 
+  const availableSources = useMemo(() => {
+    const sources = new Set(jobs.map((j) => j.source).filter(Boolean));
+    return Array.from(sources).sort();
+  }, [jobs]);
+
+  const isWithinTimeFilter = (job: Job): boolean => {
+    if (timeFilter === "All") return true;
+    if (!job.date_posted || job.date_posted === "Recent") return true;
+    const jobDate = new Date(job.date_posted);
+    if (isNaN(jobDate.getTime())) return true;
+    const ms = TIME_FILTERS.find((f) => f.label === timeFilter)?.ms ?? Infinity;
+    return Date.now() - jobDate.getTime() <= ms;
+  };
+
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
+      if (!isWithinTimeFilter(job)) return false;
+
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         const match =
@@ -132,11 +178,14 @@ export default function Home() {
       if (filters.type.length > 0 && !filters.type.includes(job.type)) {
         return false;
       }
+      if (filters.source.length > 0 && !filters.source.includes(job.source)) {
+        return false;
+      }
       return true;
     });
-  }, [jobs, searchQuery, filters]);
+  }, [jobs, searchQuery, filters, timeFilter]);
 
-  const toggleFilter = (category: "location" | "type", value: string) => {
+  const toggleFilter = (category: "location" | "type" | "source", value: string) => {
     setFilters((prev) => {
       const current = prev[category];
       const next = current.includes(value)
@@ -145,6 +194,10 @@ export default function Home() {
       return { ...prev, [category]: next };
     });
   };
+
+  const activeFilterCount =
+    filters.location.length + filters.type.length + filters.source.length +
+    (timeFilter !== "All" ? 1 : 0);
 
   const totalJobs = filteredJobs.length;
   const ngoJobs = filteredJobs.filter((j) => j.type === "NGO").length;
@@ -168,6 +221,23 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Time Filter Bar */}
+      <div className="flex items-center justify-center gap-2 mb-6">
+        <Clock className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground mr-1">Posted:</span>
+        {TIME_FILTERS.map((f) => (
+          <Button
+            key={f.label}
+            variant={timeFilter === f.label ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTimeFilter(f.label)}
+            className="h-8 text-xs"
+          >
+            {f.label}
+          </Button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {[
           { label: "Active Listings", value: totalJobs },
@@ -183,11 +253,37 @@ export default function Home() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
         <aside className="space-y-6">
+          {/* Source Filter */}
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
+              <Filter className="w-3.5 h-3.5" /> Source
+            </h3>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {availableSources.map((source) => (
+                <label
+                  key={source}
+                  className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={filters.source.includes(source)}
+                    onChange={() => toggleFilter("source", source)}
+                    className="w-4 h-4 rounded border-border bg-card accent-primary"
+                  />
+                  {source}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-3">Location</h3>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-40 overflow-y-auto">
               {availableLocations.map((loc) => (
-                <label key={loc} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
+                <label
+                  key={loc}
+                  className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                >
                   <input
                     type="checkbox"
                     checked={filters.location.includes(loc)}
@@ -204,7 +300,10 @@ export default function Home() {
             <h3 className="text-sm font-semibold text-foreground mb-3">Type</h3>
             <div className="space-y-2">
               {availableTypes.map((type) => (
-                <label key={type} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
+                <label
+                  key={type}
+                  className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                >
                   <input
                     type="checkbox"
                     checked={filters.type.includes(type)}
@@ -217,14 +316,17 @@ export default function Home() {
             </div>
           </div>
 
-          {(filters.location.length > 0 || filters.type.length > 0) && (
+          {activeFilterCount > 0 && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setFilters({ location: [], type: [] })}
+              onClick={() => {
+                setFilters({ location: [], type: [], source: [] });
+                setTimeFilter("All");
+              }}
               className="text-xs text-muted-foreground"
             >
-              Clear all filters
+              Clear all filters ({activeFilterCount})
             </Button>
           )}
         </aside>
@@ -285,7 +387,10 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Button size="sm" className="h-7 text-xs gap-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                      <Button
+                        size="sm"
+                        className="h-7 text-xs gap-1 bg-primary text-primary-foreground hover:bg-primary/90"
+                      >
                         View Details
                         <ExternalLink className="w-3 h-3" />
                       </Button>
